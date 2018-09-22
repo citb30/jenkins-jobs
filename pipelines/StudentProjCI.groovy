@@ -6,7 +6,7 @@ node {
         sh "mvn compile"
     }
     stage('Code-Quality') {
-        echo 'Running Sonarqube scans'
+        sh "sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=9fd9a621cffbfb18e3fa64e4455d151250a2deb3"
     }
     stage('Packaging') {
         echo 'Making War ffile'
