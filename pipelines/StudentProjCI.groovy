@@ -1,6 +1,6 @@
 node {
     stage('Clone-Repo') {
-        sh 'Cloning Repository'
+        echo 'Cloning Repository'
     }
 
 } 
