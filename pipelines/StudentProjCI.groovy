@@ -12,7 +12,7 @@ node {
         sh 'mvn package'
     }
     stage('Dev Deploy') {
-        echo "Deploy the war file into Dev Server"
+        build job: 'INSTANCE-CREATE', parameters: [string(name: 'PROJECT_NAME', value: 'student'), string(name: 'ENVIRONMENT', value: 'dev'), string(name: 'SERVER_NAME', value: 'studevapp01'), booleanParam(name: 'RECREATE', value: true)]
     }
     stage('Selenium Testing') {
         echo "Selenium Testing"
