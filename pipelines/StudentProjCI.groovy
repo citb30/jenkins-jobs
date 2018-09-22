@@ -1,9 +1,9 @@
 node {
     stage('Clone-Repo') {
-        echo 'Cloning Repository'
+        git 'https://github.com/citb30/studentapp-code.git'
     }
     stage('Build'){
-        echo 'Doing Compile'
+        sh "mvn compile"
     }
     stage('Code-Quality') {
         echo 'Running Sonarqube scans'
