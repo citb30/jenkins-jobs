@@ -26,7 +26,15 @@ ansible-playbook -i hosts -u ec2-user playbooks/dev-deploy.yml
 '''
     }
     stage('Selenium Testing') {
-        echo "Selenium Testing"
+        dir('SELENIUM') {
+            git 'https://github.com/citb30/selenium-sauce.git'
+            sh '''
+IPADDRESS=$(gcloud compute instances list | grep studevapp01 | awk '{print $(NF-1)}')
+sed -i -e "s/IPADDRESS/$IPADDRESS/" src/test/java/framework/CrudStudent.java
+mvn clean install "-Dremote=true" "-DseleniumGridURL=http://raghudevops30:51ece7b6-a740-43c6-90a6-a146b3727484@ondemand.saucelabs.com:80/wd/hub" "-Dplatform=Windows" "-Dbrowser=Chrome" "-Dbrowserversion=51" "-Doverwrite.binaries=true"
+'''
+        }
+        
     }
     stage('API Testing'){
         echo "API Testing"
