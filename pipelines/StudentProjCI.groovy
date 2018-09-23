@@ -14,7 +14,7 @@ node {
         sh 'cd CODE; mvn package'
     }
     stage('Dev Deploy') {
-        // build job: 'INSTANCE-CREATE', parameters: [string(name: 'PROJECT_NAME', value: 'student'), string(name: 'ENVIRONMENT', value: 'dev'), string(name: 'SERVER_NAME', value: 'studevapp01'), booleanParam(name: 'RECREATE', value: true)]
+        build job: 'INSTANCE-CREATE', parameters: [string(name: 'PROJECT_NAME', value: 'student'), string(name: 'ENVIRONMENT', value: 'dev'), string(name: 'SERVER_NAME', value: 'studevapp01'), booleanParam(name: 'RECREATE', value: true)]
         dir('ANSIBLE') {
             git credentialsId: 'gitrouser', url: 'http://104.196.127.109/engineers/ansible.git'
         }
@@ -22,7 +22,6 @@ node {
         cd ANSIBLE
 echo 'studevapp01' >hosts 
 ansible-playbook -i hosts -u ec2-user playbooks/proj-setup.yml
-pwd
 ansible-playbook -i hosts -u ec2-user playbooks/dev-deploy.yml
 '''
     }
