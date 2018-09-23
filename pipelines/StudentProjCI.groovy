@@ -22,6 +22,7 @@ node {
         cd ANSIBLE
 echo 'studevapp01' >hosts 
 ansible-playbook -i hosts -u ec2-user playbooks/proj-setup.yml
+ansible-playbook -i hosts -u ec2-user playbooks/dev-deploy.yml
 '''
     }
     stage('Selenium Testing') {
