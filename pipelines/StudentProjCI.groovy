@@ -37,7 +37,12 @@ mvn clean install "-Dremote=true" "-DseleniumGridURL=http://raghudevops30:51ece7
         
     }
     stage('API Testing'){
-        echo "API Testing"
+        dir('SELENIUM') {
+            sh '''
+IPADDRESS=$(gcloud compute instances list | grep studevapp01 | awk '{print $(NF-1)}')
+python scripts/api-check.py $IPADDRESS
+'''
+        }
     }
     stage('Upload Artifacts') {
         echo "Upload code to artifacts"
