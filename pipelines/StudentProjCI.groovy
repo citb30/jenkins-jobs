@@ -14,15 +14,16 @@ node {
         sh 'cd CODE; mvn package'
     }
     stage('Dev Deploy') {
-        build job: 'INSTANCE-CREATE', parameters: [string(name: 'PROJECT_NAME', value: 'student'), string(name: 'ENVIRONMENT', value: 'dev'), string(name: 'SERVER_NAME', value: 'studevapp01'), booleanParam(name: 'RECREATE', value: true)]
+        //build job: 'INSTANCE-CREATE', parameters: [string(name: 'PROJECT_NAME', value: 'student'), string(name: 'ENVIRONMENT', value: 'dev'), string(name: 'SERVER_NAME', value: 'studevapp01'), booleanParam(name: 'RECREATE', value: true)]
         dir('ANSIBLE') {
             git credentialsId: 'gitrouser', url: 'http://104.196.127.109/engineers/ansible.git'
         }
         sh '''
         cd ANSIBLE
 echo 'studevapp01' >hosts 
-ansible-playbook -i hosts -u ec2-user playbooks/proj-setup.yml
-ansible-playbook -i hosts -u ec2-user playbooks/dev-deploy.yml
+#ansible-playbook -i hosts -u ec2-user playbooks/proj-setup.yml
+#ansible-playbook -i hosts -u ec2-user playbooks/dev-deploy.yml
+sleep 10
 '''
     }
     stage('Selenium Testing') {
@@ -45,7 +46,11 @@ python scripts/api-check.py $IPADDRESS
         }
     }
     stage('Upload Artifacts') {
-        echo "Upload code to artifacts"
+        dir('CODE') {
+            sh '''
+mvn deploy
+'''
+        }
     }
  
 } 
