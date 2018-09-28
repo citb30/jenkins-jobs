@@ -48,6 +48,7 @@ python scripts/api-check.py $IPADDRESS
     stage('Upload Artifacts') {
         dir('CODE') {
             sh '''
+mvn versions:set -DnewVersion=$RELEASE_VERSION-RELEASE
 mvn deploy
 '''
         }
